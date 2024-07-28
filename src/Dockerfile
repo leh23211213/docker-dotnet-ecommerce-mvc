@@ -12,12 +12,10 @@ COPY ["src/src.csproj", "src/"]
 RUN dotnet restore "src/src.csproj"
 COPY . .
 WORKDIR "/src/src"
-ARG TARGETARCH
-RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
-    dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
+RUN dotnet build "src.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "src.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "src.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
