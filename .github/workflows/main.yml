@@ -37,15 +37,15 @@ jobs:
       - name: Build and test
         uses: docker/build-push-action@v6
         with:
-          context: ./src
+          context: .
           target: build
           load: true
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./src
-          file: ./src
+          context: .
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           target: final
