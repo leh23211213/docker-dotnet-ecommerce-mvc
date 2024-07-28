@@ -6,13 +6,15 @@ EXPOSE 80
 EXPOSE 443
 ENV SimpleProperty="BASE-dockerfile"
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["src/src.csproj", "src/"]
 RUN dotnet restore "src/src.csproj"
 COPY . .
 WORKDIR "/src/src"
-RUN dotnet build "src.csproj" -c $BUILD_CONFIGURATION -o /app/build
+ARG TARGETARCH
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
 
 FROM build AS publish
 RUN dotnet publish "src.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
