@@ -2,13 +2,13 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
     paths-ignore:
       - README.md
       - .vscode/**
       - .gitignore
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
     paths-ignore:
       - README.md
       - .vscode/**
@@ -38,8 +38,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
+          file: ./src/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          target: final
           tags: ${{ vars.DOCKER_USERNAME }}/appstore_ecommerce:latest
