@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "PNLyeyLpWOdDSpjf0DxmziI0wBhshmv7+qJOLoIs9kgANMMC0vS4N18qOU1mN5GyN3/f1BmiAoPLImCNultUHQ==",
+  "success": true,
+  "projectFilePath": "E:\\IT\\VSCode\\Github\\docker-dotnet-ecommerce-mvc\\src\\src.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lenovo\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.5\\microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512"
+  ],
+  "logs": []
+}
