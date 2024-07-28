@@ -8,9 +8,9 @@ ENV SimpleProperty="BASE-dockerfile"
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["../src/src.csproj", "."]
+COPY ["src/src.csproj", "."]
 RUN dotnet restore "src/src.csproj"
-COPY ../src/. .
+COPY src/. .
 RUN dotnet build "src.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
