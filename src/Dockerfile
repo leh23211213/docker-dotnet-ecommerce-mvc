@@ -12,7 +12,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/src.csproj", "./"]
 RUN dotnet restore "./src.csproj"
-COPY . .
+COPY src/. .
+WORKDIR "/src"
 RUN dotnet build "src.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish stage
