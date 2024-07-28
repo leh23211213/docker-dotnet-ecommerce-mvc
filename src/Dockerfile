@@ -2,27 +2,20 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 80
+EXPOSE 443
 ENV SimpleProperty="BASE-dockerfile"
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/src.csproj", "src/"]
 RUN dotnet restore ".src/src.csproj"
 COPY . .
+WORKDIR "/src/src"
 RUN dotnet build "src.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "src.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-# Development stage for local testing
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
-COPY .. /source
-WORKDIR /source/src
-CMD dotnet run --no-launch-profile
 
 FROM base AS final
 WORKDIR /app
