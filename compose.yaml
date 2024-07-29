@@ -1,37 +1,48 @@
+version: "4"
+name: appstore_ecommerce
 services:
-  server:
+  mvcapp:
+    image: hieple2000/appstore_ecommerce:lastest
+    container_name: mvcapp
     build:
-      context: .
-      target: development
+      context: ./src/project
+      dockerfile: Dockerfile
+    networks:
+      - appstore_ecommerce
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__dockerEssentials=Server=sqlserver;Database=dockerEssentials;User Id=sa;Password=yourStrong(!)Password
     ports:
       - 8080:80
     depends_on:
-      db:
+      sqlserver:
         condition: service_healthy
-    develop:
-      watch:
-        - action: rebuild
-          path: .
-  db:
-    image: mcr.microsoft.com/mssql/server
-    restart: always
+    restart: on-failure
+   
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    networks:
+      - appstore_ecommerce
     environment:
-      SA_PASSWORD_FILE: /run/secrets/db-password
-      ACCEPT_EULA: "Y"
-      MSSQL_DB: example
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
     secrets:
       - db-password
+     ports:
+      - 1433:1433
     volumes:
-      - db-data:/var/opt/mssql
-    expose:
-      - 1433
+      - sqlserverdata:/var/opt/mssql
     healthcheck:
       test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P $(cat /run/secrets/db-password) -Q 'SELECT 1'"]
       interval: 10s
       timeout: 5s
       retries: 5
 volumes:
-  db-data:
+ sqlserverdata:
+networks:
+  appstore_ecommerce:
+    name: appstore_ecommerce
 secrets:
   db-password:
     file: db/password.txt
