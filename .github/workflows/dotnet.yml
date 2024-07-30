@@ -1,4 +1,4 @@
-name: Build .NET WebApp and publish to DockerHub
+name: Build .NET WebApp
 on:
   push:
     branches:
