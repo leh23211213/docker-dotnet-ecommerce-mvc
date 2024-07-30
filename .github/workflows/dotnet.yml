@@ -33,15 +33,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - name: Set DOTNET_ROOT for Windows
-
-        if: runner.os == 'Windows'
-        run: echo "DOTNET_ROOT=C:\Program Files\dotnet" >> $GITHUB_ENV
-
-      - name: Set DOTNET_ROOT for MacOS
-        if: runner.os == 'macOS'
-        run: echo "DOTNET_ROOT=/usr/local/share/dotnet" >> $GITHUB_ENV
-
       - name: Install/Restore dependencies
         run: dotnet restore src.csproj
         working-directory: ${{ env.ROOT_PATH }}
