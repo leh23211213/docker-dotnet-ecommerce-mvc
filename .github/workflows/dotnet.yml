@@ -54,6 +54,10 @@ jobs:
         run: dotnet test src.csproj --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
         working-directory: ${{env.ROOT_PATH}}
 
+      - name: Publish application
+        run: dotnet publish --configuration Release --output ./publish
+        working-directory: ${{ env.ROOT_PATH }}
+
       - name: Upload dotnet test artifact results
         uses: actions/upload-artifact@v4
         with:
