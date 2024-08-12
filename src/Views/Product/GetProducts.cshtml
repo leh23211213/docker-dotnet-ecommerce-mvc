@@ -42,12 +42,12 @@
                                     <button class="btn btn-outline-secondary" type="submit">Search</button>
                                 </div>
                             </form>
+                             @if (TempData["Message"] != null)
+                {
+                            <div class="alert alert-warning mt-1">@TempData["Message"]</div>
+                }
                         </section>
                     </div>
-                @if (ViewBag.Message != null)
-                {
-                            <div class="alert alert-warning mt-3">@ViewBag.Message</div>
-                }
                     <section id="CategoryPage" data-name="Phone" data-template="cate">
                         <div class="Product-Box">
                             <ul class="List-Product">

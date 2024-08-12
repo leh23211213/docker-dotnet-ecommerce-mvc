@@ -95,20 +95,20 @@ namespace src.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string item, int page = 1)
         {
-            // TODO : lỗi null khi không nhập giá trị nào hêt.
-            if (string.IsNullOrEmpty(item) || item == null || item.Length == 0)
+            if (string.IsNullOrEmpty(item))
             {
-                ViewBag.Message = "Please enter a valid keyword (at least 1 characters)";
-                return View("Index", new ProductListViewModel());
+                TempData["Message"] = "Please enter a valid keyword (at least 1 character)";
+                return RedirectToAction("GetProducts");
             }
 
             var productListViewModel = await SearchProductsAsync(item, page);
             if (productListViewModel == null || !productListViewModel.Products.Any())
             {
-                ViewBag.Message = "No products found";
+                TempData["Message"] = "No products found";
+                return RedirectToAction("GetProducts");
             }
 
-            return Ok(productListViewModel);
+            return View("GetProducts", productListViewModel);
         }
 
         private async Task<ProductListViewModel> SearchProductsAsync(string search, int page)
